@@ -15,7 +15,7 @@ async function fetchAllPuns() {
                     
                     <div>
                         <a href="update-pun.html">Update</a> |
-                        <a href="#" data-id="${pun._id}">Delete</a> 
+                        <a class="deleteLink" href="#" data-id="${pun._id}">Delete</a> 
                     </div>
                 </li>
             `
@@ -40,74 +40,16 @@ async function fetchAllPuns() {
      * 6. Make sure to remove() the whole pun from DOM.
      */
 
+    let deleteLink=document.getElementsByClassName("deleteLink")
+        for(let links of deleteLink){
+            links.addEventListener('click', function(e){
+                e.preventDefault();
+
+                let pun=e.target.dataset.id
+                fetch(`https:pun-api.up.railway.app/puns/${pun}`, {
+                    method: 'DELETE'   
+                });
+                links.parentNode.parentNode.remove()
+            })
+        }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
