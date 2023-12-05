@@ -10,22 +10,26 @@
  */
 
 let form=document.getElementById('update-pun-form')
+let textArea=document.getElementById('content-textarea')
 
+updatePun()
 async function updatePun(){
     try{
         let queryString=window.location.search //This is the id form the url
+        console.log(queryString)
         let urlParams = new URLSearchParams(queryString) //Url id becomes a object
         console.log(urlParams)
         let punId=urlParams.get('id'); //För att komma åt det specifika värdet i URL:n
-        await fetch (`https://pun-api.up.railway.app/puns/${punId}`)//Lägger in pun ID:t i URL
         console.log(punId)
-        let data = {"content": document.getElementById('content-textarea').value};
+        let response=await fetch (`https://pun-api.up.railway.app/puns/${punId}`)//Lägger in pun ID:t i URL
+        let punData=await response.json()
+        console.log(punData)
+
+        textArea.value=punData.content
     }catch(error){
         console.log("Error: "+error)
     }
 }
-
-
 
 /**
  * Add here an eventlistener to update the pun, when the form is submitted
