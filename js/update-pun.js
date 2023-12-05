@@ -9,6 +9,23 @@
  * 5. Use the fetched pun data to prefill the textarea#content
  */
 
+let form=document.getElementById('update-pun-form')
+
+async function updatePun(){
+    try{
+        let queryString=window.location.search //This is the id form the url
+        let urlParams = new URLSearchParams(queryString) //Url id becomes a object
+        console.log(urlParams)
+        let punId=urlParams.get('id'); //För att komma åt det specifika värdet i URL:n
+        await fetch (`https://pun-api.up.railway.app/puns/${punId}`)//Lägger in pun ID:t i URL
+        console.log(punId)
+        let data = {"content": document.getElementById('content-textarea').value};
+    }catch(error){
+        console.log("Error: "+error)
+    }
+}
+
+
 
 /**
  * Add here an eventlistener to update the pun, when the form is submitted
@@ -19,6 +36,31 @@
  * 4. Make sure the formdata is sent in to the body parameter, when making the request. See how its done with the create pun request in create-pun.js
  * 5. If the form was successfully submitted, then redirect to the index.html with the following code: window.location.replace('index.html');
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -14,7 +14,7 @@ async function fetchAllPuns() {
                     <p>${pun.content} <br> <span class="date">- ${punDate.getFullYear()}-${punDate.getMonth()+1}-${punDate.getDate()} ${punDate.toLocaleTimeString()}</span> </p>
                     
                     <div>
-                        <a href="update-pun.html">Update</a> |
+                        <a href="update-pun.html?id=${pun._id}">Update</a> |
                         <a class="deleteLink" href="#" data-id="${pun._id}">Delete</a> 
                     </div>
                 </li>
@@ -41,15 +41,27 @@ async function fetchAllPuns() {
      */
 
     let deleteLink=document.getElementsByClassName("deleteLink")
-        for(let links of deleteLink){
-            links.addEventListener('click', function(e){
-                e.preventDefault();
+    for(let links of deleteLink){
+        links.addEventListener('click', function(e){
+            e.preventDefault();
 
-                let pun=e.target.dataset.id
-                fetch(`https:pun-api.up.railway.app/puns/${pun}`, {
-                    method: 'DELETE'   
-                });
-                links.parentNode.parentNode.remove()
-            })
-        }
+            let pun=e.target.dataset.id
+            fetch(`https:pun-api.up.railway.app/puns/${pun}`, {
+                method: 'DELETE'   
+            });
+            links.parentNode.parentNode.remove()
+        })
+    }
+
+
+    // let deleteBtns=document.getElementsByClassName('deleteLink')
+    // for(let btn of deleteBtns){
+    //     btn.addEventListener('click', function(e){
+    //         e.preventDefault()
+    //         fetch('https://pun-api.up.railway.app/puns/'+e.target.dataset.id,{
+    //             method: 'DELETE'
+    //         })
+    //         btn.parentNode.parentNode.remove()
+    //     })
+    // }
 }
