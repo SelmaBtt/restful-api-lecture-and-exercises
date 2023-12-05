@@ -10,10 +10,11 @@
  */
 
 let textArea=document.getElementById('content-textarea')
+let form=document.getElementById('update-pun-form')
 
-updatePun()
+fetchPunData()
 
-async function updatePun(){
+function idPun(){
     try{
         let queryString=window.location.search //This is the id form the url
         console.log(queryString)
@@ -21,29 +22,31 @@ async function updatePun(){
         console.log(urlParams)
         let punId=urlParams.get('id'); //För att komma åt det specifika värdet i URL:n
         console.log(punId)
-        let response=await fetch (`https://pun-api.up.railway.app/puns/${punId}`)//Lägger in pun ID:t i URL
-        let punData=await response.json()
-        console.log(punData)
         
-        textArea.value=punData.content
-
-        let form=document.getElementById('update-pun-form')
-
-        form.addEventListener('submit', function(e){
-            e.preventDefault()
-            fetch(`https://pun-api.up.railway.app/puns/${punId}`, {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({"content": textArea.value})
-            })
-            location.replace('index.html');
-        })
+        return punId;
     }catch(error){
         console.log("Error: "+error)
     }
 }
+async function fetchPunData(){
+    let response=await fetch (`https://pun-api.up.railway.app/puns/${idPun()}`)//Lägger in pun ID:t i URL
+    let punData=await response.json()
+    console.log(punData)
+    textArea.value=punData.content
+}
+
+form.addEventListener('submit', function(e){
+    e.preventDefault()
+    fetch(`https://pun-api.up.railway.app/puns/${idPun()}`, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"content": textArea.value})
+    })
+    .then(()=>window.location.replace('index.html'))
+    .catch((error) => console.log(error));
+})
 
 /**
  * Add here an eventlistener to update the pun, when the form is submitted
