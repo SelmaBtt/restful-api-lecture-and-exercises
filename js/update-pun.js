@@ -9,6 +9,41 @@
  * 5. Use the fetched pun data to prefill the textarea#content
  */
 
+let textArea=document.getElementById('content-textarea')
+
+updatePun()
+
+async function updatePun(){
+    try{
+        let queryString=window.location.search //This is the id form the url
+        console.log(queryString)
+        let urlParams = new URLSearchParams(queryString) //Url id becomes a object
+        console.log(urlParams)
+        let punId=urlParams.get('id'); //För att komma åt det specifika värdet i URL:n
+        console.log(punId)
+        let response=await fetch (`https://pun-api.up.railway.app/puns/${punId}`)//Lägger in pun ID:t i URL
+        let punData=await response.json()
+        console.log(punData)
+        
+        textArea.value=punData.content
+
+        let form=document.getElementById('update-pun-form')
+
+        form.addEventListener('submit', function(e){
+            e.preventDefault()
+            fetch(`https://pun-api.up.railway.app/puns/${punId}`, {
+                method: 'PATCH',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"content": textArea.value})
+            })
+            location.replace('index.html');
+        })
+    }catch(error){
+        console.log("Error: "+error)
+    }
+}
 
 /**
  * Add here an eventlistener to update the pun, when the form is submitted
@@ -18,7 +53,8 @@
  * 3. Update the specific pun by making a "PATCH" request to: https://pun-api.up.railway.app/puns/<punId>, where <punId> is the value of urlParams.get('id')
  * 4. Make sure the formdata is sent in to the body parameter, when making the request. See how its done with the create pun request in create-pun.js
  * 5. If the form was successfully submitted, then redirect to the index.html with the following code: window.location.replace('index.html');
- */
+*/
+
 
 
 
