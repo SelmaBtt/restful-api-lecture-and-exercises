@@ -14,6 +14,19 @@ let form=document.getElementById('update-pun-form')
 
 fetchPunData()
 
+form.addEventListener('submit', function(e){
+    e.preventDefault()
+    fetch(`https://pun-api.up.railway.app/puns/${idPun()}`, {
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({"content": textArea.value})
+    })
+    .then(()=>window.location.replace('index.html'))
+    .catch((error) => console.log(error));
+})
+
 function idPun(){
     try{
         let queryString=window.location.search //This is the id form the url
@@ -29,24 +42,15 @@ function idPun(){
     }
 }
 async function fetchPunData(){
-    let response=await fetch (`https://pun-api.up.railway.app/puns/${idPun()}`)//Lägger in pun ID:t i URL
-    let punData=await response.json()
-    console.log(punData)
-    textArea.value=punData.content
+    try{
+        let response=await fetch (`https://pun-api.up.railway.app/puns/${idPun()}`)//Lägger in pun ID:t i URL
+        let punData=await response.json()
+        console.log(punData)
+        textArea.value=punData.content
+    }catch(error){
+        console.log("Error: "+error)
+    }
 }
-
-form.addEventListener('submit', function(e){
-    e.preventDefault()
-    fetch(`https://pun-api.up.railway.app/puns/${idPun()}`, {
-        method: 'PATCH',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({"content": textArea.value})
-    })
-    .then(()=>window.location.replace('index.html'))
-    .catch((error) => console.log(error));
-})
 
 /**
  * Add here an eventlistener to update the pun, when the form is submitted
