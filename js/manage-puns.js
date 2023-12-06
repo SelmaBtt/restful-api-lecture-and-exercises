@@ -49,7 +49,7 @@ async function fetchAllPuns() {
             fetch(`https:pun-api.up.railway.app/puns/${pun}`, {
                 method: 'DELETE'   
             });
-            links.parentNode.parentNode.remove()
+            e.target.parentNode.parentNode.remove()
         })
     }
 
